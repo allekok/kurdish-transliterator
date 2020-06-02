@@ -28,11 +28,10 @@ function ar2IL (s) {
 		    ch_len = ch.length,
 		    prev_ch = L(str, pos-1),
 		    next_ch = L(str, pos+ch_len),
-		    prev_v = is_(prev_ch, v),
 		    next_v = is_(next_ch, v),
 		    i = 1; // v
-		if(prev_ch == "‌")
-			prev_ch = L(str, pos-2);
+		if(prev_ch == "‌") prev_ch = L(str, pos-2);
+		let prev_v = is_(prev_ch, v);
 		
 		if(is_(str, ["وو","یی","ی","و"]));
 		else if(ch_len == 2) {
@@ -179,14 +178,16 @@ function str_replace_pos (from, to, str, pos) {
 }
 
 function apply_to_words (str, fun) {
-	let include = "«»`1234567890-=~!@#$%^&*()_+[]{}\\|;:'\",./<>?؛،؟١٢٣٤٥٦٧٨٩٠ \n\t\r",
+	let include = "«»`1234567890-=~!@#$%^&*()_+[]{}\\|;:'\",./<>?؛،؟١٢٣٤٥٦٧٨٩٠ \n\t\rABCDEFGHIJKLMNOPQRSTUVWXYZ",
 	    i = 0, new_str = '';
 	while(str[i] !== undefined) {
 		let token = '';
-		while(str[i] !== undefined && include.indexOf(str[i]) === -1)
+		while(str[i] !== undefined &&
+		      include.indexOf(str[i].toUpperCase()) === -1)
 			token += str[i++];
 		if(!token)
-			while(include.indexOf(str[i]) !== -1)
+			while(str[i] !== undefined &&
+			      include.indexOf(str[i].toUpperCase()) !== -1)
 				token += str[i++];
 		new_str += fun(token);
 	}
