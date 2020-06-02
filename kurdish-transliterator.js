@@ -12,6 +12,7 @@ function transliterate_ar2per (str) {
 }
 
 function ar2IL (s) {
+	s = standardizing(s);
 	const exceptions = [[/([مسپ])ە([حر])و(ی.*)/g, "$1ە$2w$3"],
 			    ["عیوونی", "عyوونی"]];
 	s = replace_sure(s, exceptions);
@@ -21,17 +22,16 @@ function ar2IL (s) {
 			 ["و", "u", "w"]];
 	const bizroke = 'i';
 	const v = "ەeێêۆoاaiuîû";
-	const n = "قwرڕتyئحعپسشدفگغهژکلڵزخجچڤبنمھ";
+	const n = "قwرڕتyئحعپسشدفگغهژکلڵزخجچڤبنمڎصۊۉ";
 	function determine_notsure (R, str) {
 		let pos = R[0],
 		    ch = R[1][0],
 		    ch_len = ch.length,
 		    prev_ch = L(str, pos-1),
 		    next_ch = L(str, pos+ch_len),
+		    prev_v = is_(prev_ch, v),
 		    next_v = is_(next_ch, v),
 		    i = 1; // v
-		if(prev_ch == "‌") prev_ch = L(str, pos-2);
-		let prev_v = is_(prev_ch, v);
 		
 		if(is_(str, ["وو","یی","ی","و"]));
 		else if(ch_len == 2) {
@@ -47,8 +47,7 @@ function ar2IL (s) {
 }
 
 function ar2lat (s) {
-	const sure = [["ھ", "h"],
-		      ["ە", "e"],
+	const sure = [["ە", "e"],
 		      ["ێ", "ê"],
 		      ["ۆ", "o"],
 		      ["ا", "a"],
@@ -79,16 +78,20 @@ function ar2lat (s) {
 		      ["ب", "b"],
 		      ["ن", "n"],
 		      ["م", "m"],
-		      ["١", "1"],
-		      ["٢", "2"],
-		      ["٣", "3"],
-		      ["٤", "4"],
-		      ["٥", "5"],
-		      ["٦", "6"],
-		      ["٧", "7"],
-		      ["٨", "8"],
-		      ["٩", "9"],
-		      ["٠", "0"],
+		      ["ڎ", "ḍ"],
+		      ["ص", "ṣ"],
+		      ["ۊ", "ü"],
+		      ["ۉ", "ṿ"],
+		      ["٠|۰", "0"],
+		      ["١|۱", "1"],
+		      ["٢|۲", "2"],
+		      ["٣|۳", "3"],
+		      ["٤|۴", "4"],
+		      ["٥|۵", "5"],
+		      ["٦|۶", "6"],
+		      ["٧|۷", "7"],
+		      ["٨|۸", "8"],
+		      ["٩|۹", "9"],
 		      ["،", ","],
 		      ["؛", ";"],
 		      ["؟", "?"]];
@@ -105,8 +108,18 @@ function ar2per (s) {
 		      ["w", "و"],
 		      ["y", "ی"],
 		      ["î", "ی"],
-		      ["i", "\u{652}"]];
-	const n = "قرڕتئحعپسشدفگغهژکلڵزخجچڤبنمھ";
+		      ["i", "\u{652}"],
+		      ["٠", "۰"],
+		      ["١", "۱"],
+		      ["٢", "۲"],
+		      ["٣", "۳"],
+		      ["٤", "۴"],
+		      ["٥", "۵"],
+		      ["٦", "۶"],
+		      ["٧", "۷"],
+		      ["٨", "۸"],
+		      ["٩", "۹"]];
+	const n = "قرڕتئحعپسشدفگغهژکلڵزخجچڤبنمڎصۊۉ";
 	const v = "ەێۆاuûîi";
 	/* Tashdid */
 	function add_tashdid (str, n, v, tashdid="\u{651}") {
@@ -127,6 +140,25 @@ function ar2per (s) {
 		return s;
 	}
 	return replace_sure(add_tashdid(determine_hemze(ar2IL(s)), n, v), sure);
+}
+
+function standardizing (str) {
+	return replace_sure(str, [
+		["ھ","ه"],
+		["ك|ڪ", "ک"],
+		["ي|ى|ے", "ی"],
+		["ض|ظ|ذ","ز"],
+		["ث","س"],
+		["ط|ة","ت"],
+		["أ","ئە"],
+		["إ","ئی"],
+		["آ","ئا"],
+		["ؤ","ۆ"],
+		["ـ",""],
+		["‌",""],
+		["َ", "ە"],
+		["ِ", "î"],
+		["ُ", "u"]]);
 }
 
 function add_bizroke (str, n, bizroke="") {
