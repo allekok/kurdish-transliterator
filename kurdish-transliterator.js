@@ -40,7 +40,7 @@ function ar2IL (s) {
 		
 		if(is_(str, ["وو","یی","ی","و"]));
 		else if(ch_len == 2) {
-			if(prev_v && next_v) i = 4;
+			if(prev_v && (next_v || next_ch == 'ی')) i = 4;
 			else if(pos == 0 || prev_v) i = 3;
 			else if(next_v) i = 2;
 		}
