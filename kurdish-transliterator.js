@@ -17,8 +17,6 @@ function ar2IL (s) {
 			    ["ئەیوب", "ئەyوب"],
 			    ["ئەییوب", "ئەyyوب"],
 			    ["ئەییووب", "ئەyyووب"],
-			    ["دەرویش", "دەرwیش"],
-			    ["خوین", "خiوین"],
 			    ["ئارەزوی", "ئارەزuی"],
 			    ["ئارزوی", "ئارزuی"]];
 	s = replace_sure(s, exceptions);
@@ -35,7 +33,9 @@ function ar2IL (s) {
 		    ch_len = ch.length,
 		    prev_ch = L(str, pos-1),
 		    next_ch = L(str, pos+ch_len),
+		    next_ch_2 = L(str, pos+ch_len+1),
 		    next_v = is_(next_ch, v),
+		    next_v_2 = is_(next_ch_2, v),
 		    i = 1; // v
 		if(prev_ch == '‌') prev_ch = L(str, pos-2);
 		let prev_v = is_(prev_ch, v);
@@ -47,7 +47,7 @@ function ar2IL (s) {
 			else if(next_v) i = 2;
 		}
 		else if(pos == 0 || prev_v || next_v ||
-			(ch == 'و' && next_ch == 'ی' && !L(str, pos+2))) i = 2;
+			(ch == 'و' && next_ch == 'ی' && !next_v_2)) i = 2;
 		return i;
 	}
 	return add_bizroke(replace_notsure(s, notsure, determine_notsure),
