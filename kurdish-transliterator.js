@@ -232,8 +232,13 @@ function apply_to_words (str, fun) {
 function apply_to_text (el, proc) {
 	let html = '';
 	for(const o of el.childNodes) {
-		if(o.nodeName == '#text')
-			html += proc(o.data);
+		if(o.nodeName == '#text') {
+			if(o.parentElement.className.
+			   indexOf('material-icons') === -1)
+				html += proc(o.data);
+			else
+				html += o.data;
+		}
 		else {
 			apply_to_text(o, proc);
 			if(o.outerHTML !== undefined)
