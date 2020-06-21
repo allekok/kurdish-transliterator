@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html dir="rtl" >
+	<head>
+		<title></title>
+		<meta charset="utf-8" >
+		<meta name="viewport" content="width=device-width" >
+		<style>
+		 html {
+			 height:100%;
+		 }
+		 body {
+			 font-size:16px;
+			 margin:0;
+			 height:100%;
+			 display:flex;
+			 flex-direction:column;
+		 }
+		 textarea {
+			 font-size:inherit;
+			 max-width:100%;
+			 width:100%;
+			 box-sizing:border-box;
+			 padding:1em;
+			 height:100%;
+			 outline:0;
+			 border:0;
+			 display:block;
+		 }
+		 textarea:focus {
+			 outline:0;
+		 }
+		 #lat {
+			 direction:ltr;
+		 }
+		 #lat, #ar {
+			 border-bottom:5px solid #EEE;
+		 }
+		</style>
+	</head>
+	<body>
+		<textarea id="ar" placeholder="کوردی (لێرە بنوسن)"></textarea>
+		<textarea id="lat" placeholder="Kurdî"></textarea>
+		<textarea id="per" placeholder="فارسی"></textarea>
+	</body>
+	<script src="kurdish-transliterator.js"></script>
+	<script>
+	 let ar = document.getElementById("ar"),
+	     lat = document.getElementById("lat"),
+	     per = document.getElementById("per")
+	 ar.addEventListener("keyup", (e) => {
+		 lat.value = transliterate_ar2lat(ar.value)
+		 per.value = transliterate_ar2per(ar.value)
+	 })
+	 ar.focus()
+	</script>
+</html>
