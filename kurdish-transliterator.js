@@ -111,7 +111,13 @@ function ar2lat (s) {
 		      ["،", ","],
 		      ["؛", ";"],
 		      ["؟", "?"]];
-	return replace_sure(ar2IL(s), sure);
+	/* Tashdid */
+	function remove_tashdid (s, tashdid="\u{651}") {
+		return replace_sure(s, [
+			[`(.)([َُِ])${tashdid}`, "$1$1$2"],
+			[`(.)${tashdid}`, "$1$1"]]);
+	}
+	return replace_sure(remove_tashdid(ar2IL(s)), sure);
 }
 
 function ar2per (s) {
