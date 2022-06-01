@@ -163,6 +163,7 @@ function ar2per(s) {
 		determine_hemze(ar2IL(s)), n, v), sure)
 }
 function ar2cyr(s) {
+	/* Source: https://t.me/abdanandehlorankurd */
 	const sure = [["أ", "ئە"],
 		      ["إ", "ئی"],
 		      ["آ", "ئا"],
